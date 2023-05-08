@@ -1,0 +1,8 @@
+<launch>
+    <arg name="cf_id"/>
+    <group ns="/combo/$(arg cf_id)">
+	    <node pkg="isse_crazy" type="combo_real_wand.py" name="combo_wand_$(arg cf_id)">
+      		<param name="id" value="$(arg cf_id)"/>
+	    </node>
+	</group>
+</launch>
