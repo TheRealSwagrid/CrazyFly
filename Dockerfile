@@ -28,12 +28,14 @@ RUN echo -e "# Crazyradio (normal operation) \nSUBSYSTEM==\"usb\", ATTRS{idVendo
 RUN echo -e "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"0483\", ATTRS{idProduct}==\"5740\", MODE=\"0664\", GROUP=\"plugdev\"" | sudo tee /etc/udev/rules.d/99-crazyflie.rules
 #RUN udevadm control --reload-rules && udevadm trigger
 
-# Build ISSE CrazyFly 
+# Build CrazyFly 
 COPY /ros_ws /ros_ws
+COPY AbstractVirtualCapability.py ros_ws/src/isse_crazy
+COPY CrazyFly.py ros_ws/src/isse_crazy
+
 RUN source crazyswarm/ros_ws/devel/setup.bash && cd /ros_ws && catkin_make
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 ENV PYTHONPATH=$PYTHONPATH:/crazyswarm/ros_ws/src/crazyswarm/scripts
 
-CMD source /crazyswarm/ros_ws/devel/setup.bash && source /ros_ws/devel/setup.bash && bash
-
+CMD source /crazyswarm/ros_ws/devel/setup.bash && source /ros_ws/devel/setup.bash && roslaunch isse_crazy crazyfly.launch cf_id:=1 semantix_port:=${semantix_port}

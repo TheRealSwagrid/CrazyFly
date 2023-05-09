@@ -1,2 +1,0 @@
-geometry_msgs/Vector3 diffVector
-float64 hz
