@@ -29,10 +29,10 @@ class CrazyFly_Ros_interface:
     def fly_to(self, p: list):
         self.cf.setLEDColor(1., 1., 0.)
         self.cf.goTo(p, 0, 5)
-        timer = time.time()
         pos = self.get_position()
         dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
-        while dist > 0.1 and time.time() - timer < 5:
+        while dist > 0.1:
+            pos = self.get_position()
             dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
         self.cf.setLEDColor(0., 1., 0.)
 
@@ -51,7 +51,7 @@ class CrazyFly_Ros_interface:
         sleep(3)
 
     def get_position(self):
-        return self.cf.position()
+        return self.cf.position().tolist()
 
     def get_arming_status(self):
         return self.arming_status
@@ -88,8 +88,8 @@ if __name__ == '__main__':
 
     copter.functionality["arm"] = drone.arm
     copter.functionality["disarm"] = drone.disarm
-    copter.functionality["SetISSECopterPosition"] = drone.fly_to
-    copter.functionality["GetISSECopterPosition"] = drone.get_position
+    copter.functionality["SetCopterPosition"] = drone.fly_to
+    copter.functionality["GetCopterPosition"] = drone.get_position
     copter.functionality["GetArmingStatus"] = drone.get_arming_status
     copter.start()
     # signal.signal(signal.SIGTERM, handler)
