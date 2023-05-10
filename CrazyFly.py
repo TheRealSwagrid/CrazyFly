@@ -25,12 +25,11 @@ class CrazyFly(AbstractVirtualCapability):
             return self.functionality["GetArmingStatus"]()
         return {"SimpleBooleanParameter": False}
 
-        def SetCopterPosition(self, params: dict) -> dict:
-
-            try:
-                p = params["Position3D"]
-            except:
-                return self.GetISSECopterPosition(params)
+    def SetCopterPosition(self, params: dict) -> dict:
+        try:
+            p = params["Position3D"]
+        except:
+            return self.GetCopterPosition(params)
         formatPrint(self, f"Flying to {p}")
         if self.functionality["SetISSECopterPosition"] is not None:
             self.functionality["SetISSECopterPosition"](p)
@@ -42,11 +41,11 @@ class CrazyFly(AbstractVirtualCapability):
         if self.functionality["GetISSECopterPosition"] is not None:
             pos = self.functionality["GetISSECopterPosition"]()
             self.copterPosition = pos
-        return {"Position3D": self.ISSECopterPosition}
+        return {"Position3D": self.copterPosition}
 
     def FlyToPosition(self, params: dict) -> dict:
         formatPrint(self, f"Flying to position {params}")
-        return self.SetISSECopterPosition(params)
+        return self.SetCopterPosition(params)
 
     def loop(self):
         pass
