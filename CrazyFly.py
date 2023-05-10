@@ -31,15 +31,15 @@ class CrazyFly(AbstractVirtualCapability):
         except:
             return self.GetCopterPosition(params)
         formatPrint(self, f"Flying to {p}")
-        if self.functionality["SetISSECopterPosition"] is not None:
-            self.functionality["SetISSECopterPosition"](p)
+        if self.functionality["SetCopterPosition"] is not None:
+            self.functionality["SetCopterPosition"](p)
         else:
             pass
         return self.GetCopterPosition({})
 
     def GetCopterPosition(self, params: dict) -> dict:
-        if self.functionality["GetISSECopterPosition"] is not None:
-            pos = self.functionality["GetISSECopterPosition"]()
+        if self.functionality["GetCopterPosition"] is not None:
+            pos = self.functionality["GetCopterPosition"]()
             self.copterPosition = pos
         return {"Position3D": self.copterPosition}
 
