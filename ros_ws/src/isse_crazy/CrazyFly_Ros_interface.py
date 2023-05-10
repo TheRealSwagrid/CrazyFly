@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import math
+import time
 from time import sleep
 
 import rospy
@@ -28,9 +29,10 @@ class CrazyFly_Ros_interface:
     def fly_to(self, p: list):
         self.cf.setLEDColor(1., 1., 0.)
         self.cf.goTo(p, 0, 5)
+        timer = time.time()
         pos = self.get_position()
         dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
-        while dist > 0.1:
+        while dist > 0.1 and time.time() - timer < 5:
             dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
         self.cf.setLEDColor(0., 1., 0.)
 
