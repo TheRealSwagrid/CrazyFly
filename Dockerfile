@@ -37,5 +37,4 @@ RUN source crazyswarm/ros_ws/devel/setup.bash && cd /ros_ws && catkin_make
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 ENV PYTHONPATH=$PYTHONPATH:/crazyswarm/ros_ws/src/crazyswarm/scripts
-
 CMD source /crazyswarm/ros_ws/devel/setup.bash && source /ros_ws/devel/setup.bash && roslaunch isse_crazy crazyfly.launch cf_id:=1 semantix_port:=${semantix_port}
