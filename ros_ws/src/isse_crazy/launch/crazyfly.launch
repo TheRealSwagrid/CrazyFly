@@ -27,16 +27,16 @@ firmwareParams:
     commander:
         enHighLevel: 1
     stabilizer:
-        estimator: 2 # 1: complementary, 2: kalman
-        controller: 1 # 1: PID, 2: mellinger
+        estimator: 2
+        controller: 1
     ring:
-        effect: 7 # 6: double spinner, 7: solid color, 16: packetRate
-        solidBlue: 120 # if set to solid color
-        solidGreen: 120 # if set to solid color
-        solidRed: 0 # if set to solid color
-    headlightEnable: 0
+        effect: 7
+        solidBlue: 120
+        solidGreen: 120
+        solidRed: 0
+        headlightEnable: 0
     locSrv:
-        etPosStdDev: 1e-3
+        extPosStdDev: 1e-3
         extQuatStdDev: 0.5e-1
     kalman:
         resetEstimation: 1
