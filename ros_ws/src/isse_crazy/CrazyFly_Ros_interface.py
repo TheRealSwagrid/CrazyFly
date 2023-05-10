@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import math
+from time import sleep
+
 import rospy
 from AbstractVirtualCapability import VirtualCapabilityServer
 from CrazyFly import CrazyFly
@@ -22,20 +25,28 @@ class CrazyFly_Ros_interface:
                 break
 
 
-    def fly_to(self, pos: list):
-        self.cf.goTo(pos, 0, 5)
+    def fly_to(self, p: list):
+        self.cf.setLEDColor(1., 1., 0.)
+        self.cf.goTo(p, 0, 5)
+        pos = self.get_position()
+        dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
+        while dist > 0.1:
+            dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
+        self.cf.setLEDColor(0., 1., 0.)
 
     def arm(self):
         self.arming_status = True
-        self.cf.setLEDColor(0, 255, 0)
+        self.cf.setLEDColor(0., 1., 0.)
         self.cf.takeoff(1.0, 3.0)
         rospy.sleep(3)
+        sleep(3)
 
     def disarm(self):
         self.arming_status = False
-        self.cf.setLEDColor(255, 0, 0)
+        self.cf.setLEDColor(1., 0., 0.)
         self.cf.land(0., 3.0)
         rospy.sleep(3)
+        sleep(3)
 
     def get_position(self):
         return self.cf.position()
