@@ -29,11 +29,14 @@ class CrazyFly_Ros_interface:
     def fly_to(self, p: list):
         self.cf.setLEDColor(1., 1., 0.)
         self.cf.goTo(p, 0, 5)
+        timer = time.time()
+        rospy.logerr(f"Flying to {p}")
         pos = self.get_position()
         dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
         while dist > 0.1:
             pos = self.get_position()
             dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
+        rospy.logerr(f"Arrived at {p} after {time.time() - timer} seconds")
         self.cf.setLEDColor(0., 1., 0.)
 
     def arm(self):
