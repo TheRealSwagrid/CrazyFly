@@ -22,7 +22,7 @@ class CrazyFly(AbstractVirtualCapability):
 
     def GetArmingStatus(self, params: dict):
         if self.functionality["GetArmingStatus"] is not None:
-            return self.functionality["GetArmingStatus"]()
+            return {"SimpleBooleanParameter": self.functionality["GetArmingStatus"]()}
         return {"SimpleBooleanParameter": False}
 
     def SetCopterPosition(self, params: dict) -> dict:
