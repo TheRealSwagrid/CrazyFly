@@ -9,7 +9,7 @@ class CrazyFly(AbstractVirtualCapability):
         super().__init__(server)
         self.copterPosition = [0., 0., 0.]
         self.functionality = {"arm": None, "disarm": None, "SetCopterPosition": None, "GetCopterPosition": None,
-                              "GetArmingStatus": None}
+                              "GetArmingStatus": None, "setNeoPixelColor": None}
 
     def SetArmingStatus(self, params: dict):
         formatPrint(self, f"Set Arming Status to {params}")
@@ -46,6 +46,16 @@ class CrazyFly(AbstractVirtualCapability):
     def FlyToPosition(self, params: dict) -> dict:
         formatPrint(self, f"Flying to position {params}")
         return self.SetCopterPosition(params)
+        
+    def setNeoPixelColor(self, params: dict) -> dict:
+        r = params["Red"]
+        g = params["Green"]
+        b = params["Blue"]
+        deviceID = params["DeviceID"]
+        if deviceID == "CrazyFly":
+            if r is not None and g is not None and b is not None:
+            self.functionality["setNeoPixelColor"](r, g, b)
+        return
 
     def loop(self):
         pass
