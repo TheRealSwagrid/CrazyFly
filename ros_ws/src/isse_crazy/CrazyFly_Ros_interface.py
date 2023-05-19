@@ -36,6 +36,7 @@ class CrazyFly_Ros_interface:
         while dist > 0.1:
             pos = self.get_position()
             dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
+            sleep(.01)
         rospy.logerr(f"Arrived at {p} after {time.time() - timer} seconds")
         #self.cf.setLEDColor(0., 1., 0.)
 
