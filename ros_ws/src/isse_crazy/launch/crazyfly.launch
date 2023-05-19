@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="cf_id" default="3"/>
+    <arg name="cf_id" default="2"/>
 	<arg name="semantix_port" default="7500"/>
     <rosparam file="$(find isse_crazy)/config/crazyflieTypes.yaml" />
 	<rosparam file="$(find isse_crazy)/config/crazyflies.yaml" />
