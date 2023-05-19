@@ -48,14 +48,15 @@ class CrazyFly(AbstractVirtualCapability):
         return self.SetCopterPosition(params)
         
     def setNeoPixelColor(self, params: dict) -> dict:
+        if self.functionality["GetCopterPosition"] is None:
+            return {}
         r = params["Red"]
         g = params["Green"]
         b = params["Blue"]
         deviceID = params["DeviceID"]
         if deviceID == "CrazyFly":
             if r is not None and g is not None and b is not None:
-            self.functionality["setNeoPixelColor"](r, g, b)
-        return
+                self.functionality["setNeoPixelColor"](r, g, b)
 
     def loop(self):
         pass

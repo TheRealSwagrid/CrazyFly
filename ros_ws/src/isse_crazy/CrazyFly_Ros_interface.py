@@ -74,7 +74,7 @@ class CrazyFly_Ros_interface:
         rospy.sleep(3)
 
     def change_led(self, red, green, blue):
-        self.cf.setLEDColor(red/255, green/255, blue/255)
+        self.cf.setLEDColor(red/255., green/255., blue/255.)
 
 
 if __name__ == '__main__':
