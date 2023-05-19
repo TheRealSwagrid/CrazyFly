@@ -42,14 +42,14 @@ class CrazyFly_Ros_interface:
 
     def arm(self):
         self.arming_status = True
-        self.cf.setLEDColor(1., 1., 1.)
+        #self.cf.setLEDColor(1., 1., 1.)
         self.cf.takeoff(1.0, 3.0)
         rospy.sleep(3)
         sleep(3)
 
     def disarm(self):
         self.arming_status = False
-        self.cf.setLEDColor(1., 0., 1.)
+        #self.cf.setLEDColor(1., 0., 1.)
         self.cf.land(0., 3.0)
         rospy.sleep(3)
         sleep(3)

@@ -57,6 +57,7 @@ class CrazyFly(AbstractVirtualCapability):
         if deviceID == "CrazyFly":
             if r is not None and g is not None and b is not None:
                 self.functionality["setNeoPixelColor"](r, g, b)
+        return {}
 
     def loop(self):
         pass
