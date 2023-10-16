@@ -25,7 +25,7 @@ class CrazyFly(AbstractVirtualCapability):
             return {"SimpleBooleanParameter": self.functionality["GetArmingStatus"]()}
         return {"SimpleBooleanParameter": False}
 
-    def SetCopterPosition(self, params: dict) -> dict:
+    def SetPosition(self, params: dict) -> dict:
         try:
             p = params["Position3D"]
         except:
@@ -37,7 +37,7 @@ class CrazyFly(AbstractVirtualCapability):
             pass
         return self.GetCopterPosition({})
 
-    def GetCopterPosition(self, params: dict) -> dict:
+    def GetPosition(self, params: dict) -> dict:
         if self.functionality["GetCopterPosition"] is not None:
             pos = self.functionality["GetCopterPosition"]()
             self.copterPosition = pos
@@ -46,7 +46,7 @@ class CrazyFly(AbstractVirtualCapability):
     def FlyToPosition(self, params: dict) -> dict:
         formatPrint(self, f"Flying to position {params}")
         return self.SetCopterPosition(params)
-        
+
     def setNeoPixelColor(self, params: dict) -> dict:
         if self.functionality["GetCopterPosition"] is None:
             return {}
@@ -58,6 +58,44 @@ class CrazyFly(AbstractVirtualCapability):
             if r is not None and g is not None and b is not None:
                 self.functionality["setNeoPixelColor"](r, g, b)
         return {}
+
+    def Settf_name(self, params: dict):
+        tf_name = params["SimpleStringParameter"]
+        if self.funtionality["set_name"] is not None:
+            self.position = self.funtionality["set_name"](tf_name)
+        return {"SimpleStringParameter": tf_name}
+
+    def Gettf_name(self, params: dict):
+        tf_name = "NO_ROS_CONNECTION"
+        if self.funtionality["get_name"] is not None:
+            tf_name = self.position = self.funtionality["get_name"]()
+        return {"SimpleStringParameter": tf_name}
+
+    def SetRotation(self, params: dict):
+        quat = params["Quaternion"]
+        if self.funtionality["set_rot"] is not None:
+            self.funtionality["set_rot"](quat)
+        return {"Quaternion": quat}
+
+    def GetRotation(self, params: dict):
+        quat = [0, 0, 0, 0]
+        if self.funtionality["get_name"] is not None:
+            quat = self.funtionality["get_rot"]()
+        return {"Quaternion": quat}
+
+    def RotateAroundAxis(self, params: dict):
+        axis = params["Axis"]
+        if axis == 'z':
+            axis = [0, 0, 1]
+        elif axis == 'y':
+            axis = [0, 1, 0]
+        elif axis == 'x':
+            axis = [1, 0, 0]
+        degree = params["SimpleDoubleParameter"]
+        if self.funtionality["get_name"] is not None:
+            quat = self.funtionality["rotate"](axis, degree)
+        formatPrint(self, f"New Quaternion {quat}")
+        return {"Quaternion": quat}
 
     def loop(self):
         pass
