@@ -30,13 +30,13 @@ class CrazyFly(AbstractVirtualCapability):
         try:
             p = params["Position3D"]
         except:
-            return self.GetCopterPosition(params)
+            return self.GetPosition(params)
         formatPrint(self, f"Flying to {p}")
         if self.functionality["set_pos"] is not None:
             self.functionality["set_pos"](p)
         else:
             pass
-        return self.GetCopterPosition({})
+        return self.GetPosition({})
 
     def GetPosition(self, params: dict) -> dict:
         if self.functionality["get_pos"] is not None:
@@ -46,7 +46,7 @@ class CrazyFly(AbstractVirtualCapability):
 
     def FlyToPosition(self, params: dict) -> dict:
         formatPrint(self, f"Flying to position {params}")
-        return self.SetCopterPosition(params)
+        return self.SetPosition(params)
 
     def setNeoPixelColor(self, params: dict) -> dict:
         if self.functionality["get_pos"] is None:
