@@ -7,6 +7,8 @@ import numpy as np
 import rospy
 import tf
 from AbstractVirtualCapability import VirtualCapabilityServer
+from tf.transformations import quaternion_about_axis
+
 from CrazyFly import CrazyFly
 from visualization_msgs.msg import Marker
 from tf import TransformListener
@@ -17,7 +19,7 @@ class CrazyFly_Ros_interface:
     def __init__(self):
         self.target = [0.0, 0.0, 0.0]
         self.position = [0.0, 0.0, 0.0]
-        self.rotation = [0, 0, 0, 1]
+        self.rotation = [0., 0., 0., 1.]
         self.scale = .1
         self.arming_status = False
         self.id = int(rospy.get_param('~cf_id'))
@@ -32,6 +34,23 @@ class CrazyFly_Ros_interface:
                 self.cf = Crazyflie(self.id, crazyflie["initialPosition"], self.transformListener)
                 break
 
+    def set_rotation(self, quaternion: list):
+        self.rotation = quaternion
+
+    def get_rotation(self):
+        return self.rotation
+
+    def set_name(self, name):
+        self.name = name
+
+    def get_name(self):
+        return self.name
+
+    def rotate(self, axis, deg):
+        axis = np.array(axis)
+        theta = np.deg2rad(deg)
+        self.rotation = list(quaternion_about_axis(theta, axis))
+        return self.rotation
 
     def fly_to(self, p: list):
         #self.cf.setLEDColor(1., 1., 0.)
@@ -136,10 +155,19 @@ if __name__ == '__main__':
 
     copter.functionality["arm"] = drone.arm
     copter.functionality["disarm"] = drone.disarm
-    copter.functionality["SetCopterPosition"] = drone.fly_to
-    copter.functionality["GetCopterPosition"] = drone.get_position
-    copter.functionality["GetArmingStatus"] = drone.get_arming_status
     copter.functionality["setNeoPixelColor"] = drone.change_led
+    copter.functionality["get_arming"] = lambda: drone.arming_status
+
+    copter.functionality["set_pos"] = drone.fly_to
+    copter.functionality["get_pos"] = drone.get_position
+
+    copter.functionality["set_name"] = drone.set_name
+    copter.functionality["get_name"] = drone.get_name
+
+    copter.functionality["get_rot"] = drone.get_rotation
+    copter.functionality["set_rot"] = drone.set_rotation
+    copter.functionality["rotate"] = drone.rotate
+
     copter.start()
     # signal.signal(signal.SIGTERM, handler)
 

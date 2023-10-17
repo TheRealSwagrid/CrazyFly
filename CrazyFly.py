@@ -8,9 +8,10 @@ class CrazyFly(AbstractVirtualCapability):
     def __init__(self, server):
         super().__init__(server)
         self.copterPosition = [0., 0., 0.]
-        self.functionality = {"arm": None, "disarm": None, "SetCopterPosition": None, "GetCopterPosition": None,
-                              "GetArmingStatus": None, "setNeoPixelColor": None}
-
+        self.functionality = {"arm": None, "disarm": None, "get_pos": None, "set_pos": None,
+                              "get_arming": None, "setNeoPixelColor": None, "get_name": None, "set_name": None,
+                              "get_rot": None, "set_rot": None,
+                              "rotate": None}
     def SetArmingStatus(self, params: dict):
         formatPrint(self, f"Set Arming Status to {params}")
         p = params["SimpleBooleanParameter"]
@@ -22,7 +23,7 @@ class CrazyFly(AbstractVirtualCapability):
 
     def GetArmingStatus(self, params: dict):
         if self.functionality["GetArmingStatus"] is not None:
-            return {"SimpleBooleanParameter": self.functionality["GetArmingStatus"]()}
+            return {"SimpleBooleanParameter": self.functionality["get_arming"]()}
         return {"SimpleBooleanParameter": False}
 
     def SetPosition(self, params: dict) -> dict:
@@ -31,15 +32,15 @@ class CrazyFly(AbstractVirtualCapability):
         except:
             return self.GetCopterPosition(params)
         formatPrint(self, f"Flying to {p}")
-        if self.functionality["SetCopterPosition"] is not None:
-            self.functionality["SetCopterPosition"](p)
+        if self.functionality["set_pos"] is not None:
+            self.functionality["set_pos"](p)
         else:
             pass
         return self.GetCopterPosition({})
 
     def GetPosition(self, params: dict) -> dict:
-        if self.functionality["GetCopterPosition"] is not None:
-            pos = self.functionality["GetCopterPosition"]()
+        if self.functionality["get_pos"] is not None:
+            pos = self.functionality["get_pos"]()
             self.copterPosition = pos
         return {"Position3D": self.copterPosition}
 
@@ -48,7 +49,7 @@ class CrazyFly(AbstractVirtualCapability):
         return self.SetCopterPosition(params)
 
     def setNeoPixelColor(self, params: dict) -> dict:
-        if self.functionality["GetCopterPosition"] is None:
+        if self.functionality["get_pos"] is None:
             return {}
         r = params["Red"]
         g = params["Green"]
