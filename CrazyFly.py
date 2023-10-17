@@ -62,26 +62,26 @@ class CrazyFly(AbstractVirtualCapability):
 
     def Settf_name(self, params: dict):
         tf_name = params["SimpleStringParameter"]
-        if self.funtionality["set_name"] is not None:
-            self.position = self.funtionality["set_name"](tf_name)
+        if self.functionality["set_name"] is not None:
+            self.position = self.functionality["set_name"](tf_name)
         return {"SimpleStringParameter": tf_name}
 
     def Gettf_name(self, params: dict):
         tf_name = "NO_ROS_CONNECTION"
-        if self.funtionality["get_name"] is not None:
-            tf_name = self.position = self.funtionality["get_name"]()
+        if self.functionality["get_name"] is not None:
+            tf_name = self.position = self.functionality["get_name"]()
         return {"SimpleStringParameter": tf_name}
 
     def SetRotation(self, params: dict):
         quat = params["Quaternion"]
-        if self.funtionality["set_rot"] is not None:
-            self.funtionality["set_rot"](quat)
+        if self.functionality["set_rot"] is not None:
+            self.functionality["set_rot"](quat)
         return {"Quaternion": quat}
 
     def GetRotation(self, params: dict):
         quat = [0, 0, 0, 0]
-        if self.funtionality["get_name"] is not None:
-            quat = self.funtionality["get_rot"]()
+        if self.functionality["get_name"] is not None:
+            quat = self.functionality["get_rot"]()
         return {"Quaternion": quat}
 
     def RotateAroundAxis(self, params: dict):
@@ -93,8 +93,8 @@ class CrazyFly(AbstractVirtualCapability):
         elif axis == 'x':
             axis = [1, 0, 0]
         degree = params["SimpleDoubleParameter"]
-        if self.funtionality["get_name"] is not None:
-            quat = self.funtionality["rotate"](axis, degree)
+        if self.functionality["get_name"] is not None:
+            quat = self.functionality["rotate"](axis, degree)
         formatPrint(self, f"New Quaternion {quat}")
         return {"Quaternion": quat}
 
