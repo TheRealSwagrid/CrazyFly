@@ -115,6 +115,7 @@ class CrazyFly_Ros_interface:
         # marker.color.r = .1
         # marker.color.g = .15
         # marker.color.b = .3
+        self.position = self.get_position()
         marker.mesh_use_embedded_materials = True
         marker.pose.position.x = self.position[0]
         marker.pose.position.y = self.position[1]
