@@ -130,7 +130,7 @@ class CrazyFly_Ros_interface:
         marker.color.a = 1
         marker.type = Marker.MESH_RESOURCE
         marker.action = Marker.ADD
-        marker.mesh_resource = r"package://copterhandler/meshes/copter.dae"
+        marker.mesh_resource = r"package://isse_crazy/meshes/copter.dae"
 
         self.pub.publish(marker)
 
@@ -171,10 +171,11 @@ if __name__ == '__main__':
     copter.start()
     # signal.signal(signal.SIGTERM, handler)
 
-
-    while not rospy.is_shutdown() and server.running:
+    drone.publish_visual()
+    while not rospy.is_shutdown():
         drone.publish_visual()
         drone.br.sendTransform(drone.position,
                                np.array(drone.rotation), rospy.Time.now(), drone.name, "world")
+
         rate.sleep()
         # rospy.logwarn(f"Server status: {server.running}, {copter}")
