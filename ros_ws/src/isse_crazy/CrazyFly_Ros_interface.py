@@ -140,7 +140,7 @@ class CrazyFly_Ros_interface:
 
 if __name__ == '__main__':
     rospy.init_node('rosnode')
-    rate = rospy.Rate(20)
+    rate = rospy.Rate(30)
 
     rospy.logwarn("Starting CrazyFly ROS")
     drone = CrazyFly_Ros_interface()
