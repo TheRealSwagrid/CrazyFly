@@ -8,6 +8,7 @@ class CrazyFly(AbstractVirtualCapability):
     def __init__(self, server):
         super().__init__(server)
         self.copterPosition = [0., 0., 0.]
+        self.direction = [1.,1.,1.]
         self.functionality = {"arm": None, "disarm": None, "get_pos": None, "set_pos": None,
                               "get_arming": None, "setNeoPixelColor": None, "get_name": None, "set_name": None,
                               "get_rot": None, "set_rot": None,
@@ -97,6 +98,14 @@ class CrazyFly(AbstractVirtualCapability):
             quat = self.functionality["rotate"](axis, degree)
         formatPrint(self, f"New Quaternion {quat}")
         return {"Quaternion": quat}
+
+    def GetDirection(self, params: dict):
+        return {"Vector3": self.direction}
+
+    def SetDirection(self, params: dict):
+        new_direction = params["Vector3"]
+        self.direction = new_direction
+        return self.GetDirection()
 
     def loop(self):
         pass
