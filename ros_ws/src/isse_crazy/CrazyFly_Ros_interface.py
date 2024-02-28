@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import math
+import os
+import socket
 import time
 from time import sleep
 
@@ -140,19 +142,16 @@ class CrazyFly_Ros_interface:
                               self.rotation, rospy.Time.now(), self.name, "world")
 
 if __name__ == '__main__':
-    rospy.init_node('rosnode')
+    rospy.init_node('rosnode', xmlrpc_port=int(os.environ["xmlrpc_port"]), tcpros_port=int(os.environ["tcpros_port"]))
     rate = rospy.Rate(30)
+
+    rospy.logwarn("starting isse_copter semanticplugandplay")
+    server = VirtualCapabilityServer(int(rospy.get_param('~semantix_port')), socket.gethostbyname(socket.gethostname()))
+    copter = CrazyFly(server)
 
     rospy.logwarn("Starting CrazyFly ROS")
     drone = CrazyFly_Ros_interface()
-
     rospy.logwarn("Starting server")
-
-
-    server = VirtualCapabilityServer(int(rospy.get_param('~semantix_port')))
-    
-    rospy.logwarn("starting isse_copter semanticplugandplay")
-    copter = CrazyFly(server)
 
     copter.functionality["arm"] = drone.arm
     copter.functionality["disarm"] = drone.disarm
