@@ -16,6 +16,7 @@ from visualization_msgs.msg import Marker
 from tf import TransformListener
 from pycrazyswarm.crazyflie import CrazyflieServer, Crazyflie
 
+
 class CrazyFly_Ros_interface:
 
     def __init__(self):
@@ -55,7 +56,7 @@ class CrazyFly_Ros_interface:
         return self.rotation
 
     def fly_to(self, p: list):
-        #self.cf.setLEDColor(1., 1., 0.)
+        # self.cf.setLEDColor(1., 1., 0.)
         self.cf.goTo(p, 0, 5)
         timer = time.time()
         rospy.logerr(f"Flying to {p}")
@@ -66,18 +67,18 @@ class CrazyFly_Ros_interface:
             dist = math.sqrt((p[0] - pos[0]) ** 2 + (p[1] - pos[1]) ** 2 + (p[2] - pos[2]) ** 2)
             sleep(.01)
         rospy.logerr(f"Arrived at {p} after {time.time() - timer} seconds")
-        #self.cf.setLEDColor(0., 1., 0.)
+        # self.cf.setLEDColor(0., 1., 0.)
 
     def arm(self):
         self.arming_status = True
-        #self.cf.setLEDColor(1., 1., 1.)
+        # self.cf.setLEDColor(1., 1., 1.)
         self.cf.takeoff(1.0, 3.0)
         rospy.sleep(3)
         sleep(3)
 
     def disarm(self):
         self.arming_status = False
-        #self.cf.setLEDColor(1., 0., 1.)
+        # self.cf.setLEDColor(1., 0., 1.)
         self.cf.land(0., 3.0)
         rospy.sleep(3)
         sleep(3)
@@ -103,8 +104,7 @@ class CrazyFly_Ros_interface:
         rospy.sleep(3)
 
     def change_led(self, red, green, blue):
-        self.cf.setLEDColor(red/255., green/255., blue/255.)
-
+        self.cf.setLEDColor(red / 255., green / 255., blue / 255.)
 
     def publish_visual(self):
         # rospy.logwarn(f"Publishing {self.position}")
@@ -141,17 +141,20 @@ class CrazyFly_Ros_interface:
         self.br.sendTransform(self.position,
                               self.rotation, rospy.Time.now(), self.name, "world")
 
+
 if __name__ == '__main__':
     rospy.init_node('rosnode', xmlrpc_port=int(os.environ["xmlrpc_port"]), tcpros_port=int(os.environ["tcpros_port"]))
     rate = rospy.Rate(30)
 
-    rospy.logwarn("starting isse_copter semanticplugandplay")
-    server = VirtualCapabilityServer(int(rospy.get_param('~semantix_port')), socket.gethostbyname(socket.gethostname()))
-    copter = CrazyFly(server)
-
     rospy.logwarn("Starting CrazyFly ROS")
     drone = CrazyFly_Ros_interface()
+
     rospy.logwarn("Starting server")
+
+    server = VirtualCapabilityServer(int(rospy.get_param('~semantix_port')), socket.gethostbyname(socket.gethostname()))
+
+    rospy.logwarn("starting isse_copter semanticplugandplay")
+    copter = CrazyFly(server)
 
     copter.functionality["arm"] = drone.arm
     copter.functionality["disarm"] = drone.disarm
